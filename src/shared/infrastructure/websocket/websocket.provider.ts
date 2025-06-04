@@ -29,11 +29,13 @@ export class WebsocketProducerProvider
   public handleConnection(client: Socket): void {
     const user = client.data.user
     if (user?.id) {
+      for (const [sid, uid] of this.connectedUsers.entries()) {
+        if (uid === user.id) this.connectedUsers.delete(sid)
+      }
       this.connectedUsers.set(client.id, user.id)
       this.logger.log(`Connected websocket: ${user.id} (${client.id})`)
     } else {
       client.disconnect()
-      this.logger.warn(`Desconnected websocket: ${user.id} (${client.id})`)
     }
   }
 
