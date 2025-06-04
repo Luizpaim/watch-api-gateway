@@ -14,8 +14,8 @@ import { ConfigModule } from '@nestjs/config/dist/config.module'
       useFactory: async () => {
         const store = await redisStore({
           socket: {
-            host: 'localhost',
-            port: parseInt('6379'),
+            host: process.env.REDIS_HOST || 'localhost',
+            port: process.env.REDIS_PORT || parseInt('6379'),
           },
         })
         return {
